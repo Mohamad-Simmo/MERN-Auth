@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { FiLogIn, FiEdit } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { logout, reset } from '../features/auth/authSlice';
+import { useDispatch } from 'react-redux';
 
 const StyledLink = styled(Link)`
   display: flex;
@@ -32,6 +34,15 @@ const Nav = styled.nav`
 `;
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    dispatch(reset());
+    navigate('/login');
+  };
+
   return (
     <Nav>
       <h1>Auth</h1>
@@ -45,6 +56,7 @@ const NavBar = () => {
           <FiEdit />
           <h4>Register</h4>
         </StyledLink>
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </Nav>
   );
